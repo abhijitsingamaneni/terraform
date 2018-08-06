@@ -1,4 +1,3 @@
-
 # provider is used to specifiy the region in which you want to deploy the  ec2 instance.
 provider "aws" {
   region             = "us-east-1"
@@ -32,16 +31,31 @@ data "aws_ami" "ubuntu" {
   }
 }
 
-#resource is used  to create actual ec2 instance using variable, data and also provider
-resource "aws_instance" "web" {
-  ami           = "${data.aws_ami.ubuntu.id}"
-  instance_type = "${var.type}"
+# Luanch configuration resource is used to create a new Luanch configuration
+resource "aws_launch_template" "ec2" {
+  name_prefix         = "ec2-"
+  image_id            = "${data.aws_ami.ubuntu.id}"
+  instance_type       = "${var.type}"
 
-  tags {
-    Name = "${var.TAG}"
-  }
   # this is useful when you want to create the new instance before the older instance is destroyed
-  
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_autoscaling_group" "bar" {
+  availability_zones  = ["us-east-1a"]
+  desired_capacity    = 1
+  max_size            = 1
+  min_size            = 1
+  launch_template = {
+    id = "${aws_launch_template.ec2.id}"
+    version = "$$Latest"
+  }
+
+  # this is useful when you want to create the new instance before the older instance is destroyed
+
   lifecycle {
     create_before_destroy = true
   }
