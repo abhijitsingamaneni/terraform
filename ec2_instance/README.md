@@ -3,6 +3,8 @@
 
 # USAGE
 
-```terraform init```\n
-```terraform plan```\n
-```terraform apply```\n
+```terraform init```
+
+```terraform plan```
+
+```terraform apply```
