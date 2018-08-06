@@ -3,4 +3,6 @@
 
 # USAGE
 
-''' terraform init '''
+```terraform init```
+```terraform plan```
+```terraform apply```
