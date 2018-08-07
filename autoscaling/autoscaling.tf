@@ -43,7 +43,7 @@ resource "aws_launch_template" "ec2" {
   image_id            = "${data.aws_ami.ubuntu.id}"
   instance_type       = "${var.type}"
 
-  # this is useful when you want to create the Luanch configuration before the Luanch configuration is destroyed
+  # this is useful when you want to create the Luanch configuration before the older one is destroyed
 
   lifecycle {
     create_before_destroy = true
@@ -60,7 +60,7 @@ resource "aws_autoscaling_group" "ec2" {
     version = "$$Latest"
   }
 
-  # this is useful when you want to create the new autoscaling group before the autoscaling group is destroyed
+  # this is useful when you want to create the new autoscaling group before the older one is destroyed
 
   lifecycle {
     create_before_destroy = true
