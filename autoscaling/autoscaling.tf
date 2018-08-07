@@ -3,7 +3,7 @@ provider "aws" {
   region             = "us-east-1"
 }
 
-# variable are use to pass the default values for the variable
+# variable are use to pass the default values
 
 variable "TAG" {
   description = "tag to be passed to the instance"
@@ -51,7 +51,7 @@ resource "aws_launch_template" "ec2" {
 }
 
 resource "aws_autoscaling_group" "ec2" {
-  availability_zones  = ["${var.AZ"]
+  availability_zones  = ["${var.AZ}"]
   desired_capacity    = 1
   max_size            = 1
   min_size            = 1
