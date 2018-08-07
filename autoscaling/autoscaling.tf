@@ -15,6 +15,12 @@ variable "type" {
   default = "t2.micro"
 }
 
+variable "AZ" {
+  description = "AZ in which you want to deploy the ec2 instance"
+  default = "us-east-1a"
+}
+
+
 # data is used to get the ami id of the newly updated ubuntu ami with out you passing the AMI as variable
 
 data "aws_ami" "ubuntu" {
@@ -37,15 +43,15 @@ resource "aws_launch_template" "ec2" {
   image_id            = "${data.aws_ami.ubuntu.id}"
   instance_type       = "${var.type}"
 
-  # this is useful when you want to create the new instance before the older instance is destroyed
+  # this is useful when you want to create the Luanch configuration before the Luanch configuration is destroyed
 
   lifecycle {
     create_before_destroy = true
   }
 }
 
-resource "aws_autoscaling_group" "bar" {
-  availability_zones  = ["us-east-1a"]
+resource "aws_autoscaling_group" "ec2" {
+  availability_zones  = ["${var.AZ"]
   desired_capacity    = 1
   max_size            = 1
   min_size            = 1
@@ -54,7 +60,7 @@ resource "aws_autoscaling_group" "bar" {
     version = "$$Latest"
   }
 
-  # this is useful when you want to create the new instance before the older instance is destroyed
+  # this is useful when you want to create the new autoscaling group before the autoscaling group is destroyed
 
   lifecycle {
     create_before_destroy = true
