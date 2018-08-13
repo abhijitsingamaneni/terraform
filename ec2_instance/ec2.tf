@@ -4,7 +4,7 @@ provider "aws" {
   region             = "us-east-1"
 }
 
-# variable are use to pass the default values for the variable
+# variable are use to pass the default values
 
 variable "TAG" {
   description = "tag to be passed to the instance"
@@ -41,7 +41,7 @@ resource "aws_instance" "web" {
     Name = "${var.TAG}"
   }
   # this is useful when you want to create the new instance before the older instance is destroyed
-  
+
   lifecycle {
     create_before_destroy = true
   }
