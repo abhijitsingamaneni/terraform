@@ -1,7 +1,7 @@
 
 data "aws_caller_identity" "current" {
 }
-resource "aws_iam_role" "aws_test" {
+resource "aws_iam_role" "redshift_iam" {
   name               = "${var.aws_iam_role_name}"
   description        = "${var.aws_iam_role_description}"
   path               = "${var.aws_iam_role_path}"
@@ -18,7 +18,7 @@ resource "aws_iam_role_policy_attachment" "aws_iam_custom_policies" {
   policy_arn         = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${var.aws_iam_custom_policies[count.index]}"
 }
 
-resource "aws_security_group" "redshift" {
+resource "aws_security_group" "redshift_security_group" {
   name                        = "${var.redshift_security_group}"
   description                 = "redshift security group"
   vpc_id                      = "${var.redshift_vpc}"
@@ -38,19 +38,19 @@ resource "aws_security_group" "redshift" {
   }
 }
 
-resource "aws_redshift_cluster" "default" {
+resource "aws_redshift_cluster" "redshift_cluster" {
   cluster_identifier           = "${var.unique_identifier}"
   database_name                = "${var.name_database}"
   master_username              = "${var.username_redshift}"
   master_password              = "${var.password_redshift}"
   node_type                    = "dc1.large"
   cluster_type                 = "single-node"
-  iam_roles                    = ["${aws_iam_role.aws_test.arn}"]
-  vpc_security_group_ids       = ["${aws_security_group.redshift.id}"]
+  iam_roles                    = ["${aws_iam_role.redshift_iam.arn}"]
+  vpc_security_group_ids       = ["${aws_security_group.redshift_security_group.id}"]
   skip_final_snapshot          = true
 }
 
-resource "aws_s3_bucket" "b" {
+resource "aws_s3_bucket" "redshift_bucket" {
   bucket                        = "${var.redshift_bucket}"
   acl                           = "private"
 
