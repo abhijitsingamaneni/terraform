@@ -45,4 +45,4 @@ resource "aws_s3_bucket" "terraform-state-storage-s3" {
   tags {
     Name        = "${var.vpc_environment}"
   }
-}
+
